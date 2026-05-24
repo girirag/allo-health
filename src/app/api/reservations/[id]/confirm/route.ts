@@ -8,8 +8,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    
-    // Idempotency Check
+
     const idempotencyKey = req.headers.get('Idempotency-Key')
     if (idempotencyKey) {
       const cachedResponse = await redis.get(`idempotency:confirm:${idempotencyKey}`)
@@ -20,37 +19,32 @@ export async function POST(
 
     try {
       const confirmedReservation = await prisma.$transaction(async (tx) => {
-        // 1. Find the reservation with a lock
-        // Using raw query to lock the row FOR UPDATE to prevent race conditions during confirm
+
         const reservations = await tx.$queryRaw<any[]>`
           SELECT * FROM "Reservation" 
           WHERE id = ${id} 
           FOR UPDATE;
         `
-        
+
         if (!reservations || reservations.length === 0) {
           throw new Error('NOT_FOUND')
         }
 
         const reservation = reservations[0]
 
-        // Check if already confirmed
         if (reservation.status === 'CONFIRMED') {
           return reservation
         }
 
-        // Check if expired or released
         if (reservation.status === 'RELEASED' || new Date(reservation.expiresAt) < new Date()) {
           throw new Error('EXPIRED')
         }
 
-        // 2. Update reservation status
         const updatedReservation = await tx.reservation.update({
           where: { id },
           data: { status: 'CONFIRMED' }
         })
 
-        // 3. Decrement both totalStock and reservedStock since it's now permanently bought
         await tx.$executeRaw`
           UPDATE "Inventory"
           SET "totalStock" = "totalStock" - ${reservation.quantity},

@@ -13,7 +13,6 @@ export async function GET() {
       },
     })
 
-    // Map the products to include availableStock per warehouse
     const formattedProducts = products.map((product) => {
       const inventory = product.Inventory.map((inv) => ({
         warehouseId: inv.warehouseId,

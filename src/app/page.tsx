@@ -65,14 +65,12 @@ export default function Home() {
 
   const router = useRouter()
   const [reserving, setReserving] = useState<string | null>(null)
-  
-  // Search & Filter state
+
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeWarehouseTab, setActiveWarehouseTab] = useState('ALL') // 'ALL', 'NY', 'CA'
-  const [activeStockTab, setActiveStockTab] = useState('ALL') // 'ALL', 'LOW_STOCK', 'IN_STOCK'
+  const [activeWarehouseTab, setActiveWarehouseTab] = useState('ALL') 
+  const [activeStockTab, setActiveStockTab] = useState('ALL') 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  // Simulation Metrics
   const [dbPing, setDbPing] = useState(15)
   const [connectedClients, setConnectedClients] = useState(5)
 
@@ -130,19 +128,17 @@ export default function Home() {
     }
   }
 
-  // Filtered Products
   const filteredProducts = useMemo(() => {
     if (!products) return []
 
     return products.filter((product) => {
-      // 1. Search Query filter
+
       const matchesSearch = 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase())
 
       if (!matchesSearch) return false
 
-      // 2. Warehouse Tab filter
       const matchesWarehouse = 
         activeWarehouseTab === 'ALL' ||
         product.inventory.some(
@@ -153,7 +149,6 @@ export default function Home() {
 
       if (!matchesWarehouse) return false
 
-      // 3. Stock Tab filter
       const totalAvailable = product.inventory.reduce((sum, inv) => sum + inv.availableStock, 0)
       if (activeStockTab === 'LOW_STOCK') {
         return totalAvailable > 0 && totalAvailable <= 10
@@ -171,7 +166,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen z-10">
-      {/* Scanline overlay */}
+      {}
       <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.02]"
         style={{
           background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
@@ -179,11 +174,11 @@ export default function Home() {
         }} 
       />
 
-      {/* Header */}
+      {}
       <header className="sticky top-0 z-40 backdrop-blur-xl border-b" style={{ borderColor: 'rgba(0,212,255,0.1)', background: 'rgba(10,10,15,0.85)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
+            {}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -202,7 +197,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Live stats */}
+            {}
             <div className="flex items-center gap-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -213,7 +208,7 @@ export default function Home() {
                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
                 <span className="hidden sm:inline">REFRESH</span>
               </motion.button>
-              
+
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-xs font-mono text-emerald-400 font-bold">CONNECTED</span>
@@ -224,11 +219,11 @@ export default function Home() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        
-        {/* Top Control Dashboard */}
+
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
-          
-          {/* Main Title Hero */}
+
+          {}
           <div className="lg:col-span-2 flex flex-col justify-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md mb-4 text-[10px] font-mono tracking-widest w-fit"
               style={{ background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)', color: '#00d4ff' }}>
@@ -243,9 +238,9 @@ export default function Home() {
             </p>
           </div>
 
-          {/* System status widgets */}
+          {}
           <div className="lg:col-span-2 grid grid-cols-2 gap-4">
-            
+
             <div className="cyber-card p-4 flex flex-col justify-between">
               <div className="flex items-center justify-between text-slate-500 mb-2">
                 <span className="text-xs font-mono tracking-widest uppercase">DATABASING</span>
@@ -293,10 +288,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Filters and Controls */}
+        {}
         <div className="cyber-card p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          
-          {/* Search bar */}
+
+          {}
           <div className="relative w-full md:w-80">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
@@ -308,10 +303,10 @@ export default function Home() {
             />
           </div>
 
-          {/* Futuristic Tabs */}
+          {}
           <div className="flex flex-wrap items-center gap-6 w-full md:w-auto justify-end">
-            
-            {/* Warehouse Filter */}
+
+            {}
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-slate-500 uppercase tracking-wider hidden lg:inline">Node:</span>
               <div className="bg-slate-50 p-1 rounded-lg border border-slate-200 flex gap-1">
@@ -336,7 +331,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Stock status Filter */}
+            {}
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-slate-500 uppercase tracking-wider hidden lg:inline">Status:</span>
               <div className="bg-slate-50 p-1 rounded-lg border border-slate-200 flex gap-1">
@@ -365,7 +360,7 @@ export default function Home() {
 
         </div>
 
-        {/* Live Dashboard stats pills */}
+        {}
         <div className="flex flex-wrap gap-3 mb-8">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-xs font-mono">
             <span className="text-slate-500">DATABASE SYNC STATUS:</span>
@@ -384,7 +379,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Products grid */}
+        {}
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div
@@ -447,16 +442,16 @@ export default function Home() {
                 const totalAvailable = product.inventory.reduce((sum, inv) => sum + inv.availableStock, 0)
                 return (
                   <motion.div key={product.id} variants={cardVariants} className="relative group">
-                    
-                    {/* Hover Glow Background */}
+
+                    {}
                     <div className="absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"
                       style={{ background: 'linear-gradient(135deg, rgba(0,212,255,0.1), rgba(124,58,237,0.05))', filter: 'blur(10px)' }} />
 
                     <div className="cyber-card cyber-corner relative flex flex-col h-full">
-                      {/* Accent glow corner */}
+                      {}
                       <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none rounded-tr-xl" />
 
-                      {/* Code Tag Watermark */}
+                      {}
                       <div className="absolute top-4 right-4 font-mono text-[9px] text-cyan-500/30">
                         NID_{product.id.slice(-6).toUpperCase()}
                       </div>
@@ -473,7 +468,7 @@ export default function Home() {
                           <div className="text-2xl font-black font-mono text-cyan-600">
                             ${product.price.toFixed(2)}
                           </div>
-                          
+
                           <div className="flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 rounded-full" style={{
                               backgroundColor: totalAvailable === 0 ? '#ff4060' : totalAvailable <= 5 ? '#f59e0b' : '#10b981'
@@ -492,7 +487,7 @@ export default function Home() {
                           <div className="text-[10px] font-mono text-slate-500 tracking-wider uppercase mb-1">
                             Fulfillment Cluster Nodes
                           </div>
-                          
+
                           {product.inventory.map((inv) => {
                             const isLow = inv.availableStock > 0 && inv.availableStock <= 5
                             const isOut = inv.availableStock === 0
@@ -547,7 +542,7 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* Footer */}
+        {}
         <footer className="mt-20 pt-8 border-t border-slate-900 text-center flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[10px] font-mono text-slate-600 tracking-wider">
             ALLO STORE PROTOCOL · ATOMIC INVENTORY CONCURRENCY

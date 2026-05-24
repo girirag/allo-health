@@ -14,7 +14,6 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { productId, warehouseId, quantity } = reserveSchema.parse(body)
 
-    // Idempotency Check
     const idempotencyKey = req.headers.get('Idempotency-Key')
     if (idempotencyKey) {
       const cachedResponse = await redis.get(`idempotency:${idempotencyKey}`)
@@ -25,8 +24,7 @@ export async function POST(req: Request) {
 
     try {
       const reservation = await prisma.$transaction(async (tx) => {
-        // 1. Atomically update reserved stock if available
-        // Using $queryRaw to utilize Postgres RETURNING clause
+
         const inventoryRecords = await tx.$queryRaw<{ id: string }[]>`
           UPDATE "Inventory"
           SET "reservedStock" = "reservedStock" + ${quantity}
@@ -42,8 +40,7 @@ export async function POST(req: Request) {
 
         const inventoryId = inventoryRecords[0].id
 
-        // 2. Create the reservation record
-        const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000) 
 
         const newReservation = await tx.reservation.create({
           data: {
@@ -60,9 +57,8 @@ export async function POST(req: Request) {
 
       const responsePayload = { success: true, reservation }
 
-      // Cache response for idempotency
       if (idempotencyKey) {
-        await redis.set(`idempotency:${idempotencyKey}`, JSON.stringify(responsePayload), 'EX', 60 * 60 * 24) // 24 hours
+        await redis.set(`idempotency:${idempotencyKey}`, JSON.stringify(responsePayload), 'EX', 60 * 60 * 24) 
       }
 
       return NextResponse.json(responsePayload)

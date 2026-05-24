@@ -8,22 +8,19 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
   console.log('Seeding database...')
 
-  // Clean up existing data
   await prisma.reservation.deleteMany()
   await prisma.inventory.deleteMany()
   await prisma.product.deleteMany()
   await prisma.warehouse.deleteMany()
 
-  // Create Warehouses
   const warehouse1 = await prisma.warehouse.create({
     data: { name: 'East Coast Fulfillment (NY)' },
   })
-  
+
   const warehouse2 = await prisma.warehouse.create({
     data: { name: 'West Coast Fulfillment (CA)' },
   })
 
-  // Create Products
   const product1 = await prisma.product.create({
     data: {
       name: 'Ergonomic Developer Chair',
@@ -56,7 +53,6 @@ async function main() {
     },
   })
 
-  // Create Inventory (Product 1)
   await prisma.inventory.create({
     data: {
       productId: product1.id,
@@ -74,7 +70,6 @@ async function main() {
     },
   })
 
-  // Create Inventory (Product 2)
   await prisma.inventory.create({
     data: {
       productId: product2.id,
@@ -92,22 +87,20 @@ async function main() {
     },
   })
 
-  // Create Inventory (Product 3)
   await prisma.inventory.create({
     data: {
       productId: product3.id,
-      warehouseId: warehouse2.id, // Only available in West Coast
+      warehouseId: warehouse2.id, 
       totalStock: 40,
       reservedStock: 0,
     },
   })
 
-  // Create Inventory (Product 4 - The race condition test subject)
   await prisma.inventory.create({
     data: {
       productId: product4.id,
       warehouseId: warehouse1.id,
-      totalStock: 2, // Very low stock to easily trigger race condition testing
+      totalStock: 2, 
       reservedStock: 0,
     },
   })

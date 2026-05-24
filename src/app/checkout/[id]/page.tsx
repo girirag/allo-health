@@ -21,14 +21,14 @@ function TimerRing({ seconds, total = 600 }: { seconds: number; total?: number }
   return (
     <div className="relative flex items-center justify-center">
       <svg width="140" height="140" className="-rotate-90">
-        {/* Track */}
+        {}
         <circle
           cx="70" cy="70" r={radius}
           fill="none"
           stroke="rgba(255,255,255,0.05)"
           strokeWidth="4"
         />
-        {/* Progress */}
+        {}
         <circle
           cx="70" cy="70" r={radius}
           fill="none"
@@ -42,7 +42,7 @@ function TimerRing({ seconds, total = 600 }: { seconds: number; total?: number }
           }}
         />
       </svg>
-      {/* Center content */}
+      {}
       <div className="absolute flex flex-col items-center">
         <Clock className="w-4 h-4 mb-1" style={{ color, opacity: 0.7 }} />
         <div className={`text-3xl font-black font-mono tabular-nums ${isLow ? 'animate-countdown' : ''}`}
@@ -124,7 +124,6 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
     }
   }
 
-  // Loading state
   if (!reservation && !error) {
     return (
       <main className="relative min-h-screen z-10 flex items-center justify-center">
@@ -158,7 +157,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
 
   return (
     <main className="relative min-h-screen z-10 flex flex-col">
-      {/* Header */}
+      {}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ borderColor: 'rgba(0,212,255,0.1)', background: 'rgba(10,10,15,0.85)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <motion.button
@@ -185,7 +184,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          {/* Reservation ID */}
+          {}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -205,12 +204,12 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="cyber-card cyber-corner"
             >
-              {/* Status bar */}
+              {}
               <div className="h-1 w-full rounded-t-xl"
                 style={{ background: `linear-gradient(90deg, ${statusColor}80, ${statusColor})` }} />
 
               <div className="p-6 space-y-6">
-                {/* Status badge */}
+                {}
                 <div className="flex items-center justify-between">
                   <h1 className="text-xl font-black text-slate-800 tracking-tight">
                     {isConfirmed ? 'PURCHASE CONFIRMED' : isExpired ? 'RESERVATION EXPIRED' : 'COMPLETE YOUR ORDER'}
@@ -221,7 +220,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                   </span>
                 </div>
 
-                {/* Center state visual */}
+                {}
                 <div className="flex flex-col items-center py-4">
                   {isPending && (
                     <motion.div
@@ -273,10 +272,10 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                   )}
                 </div>
 
-                {/* Divider */}
+                {}
                 <div className="cyber-divider" />
 
-                {/* Product summary */}
+                {}
                 {product && (
                   <div className="rounded-lg p-4 bg-slate-50 border border-slate-200">
                     <div className="flex items-start justify-between gap-4">
@@ -296,7 +295,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                   </div>
                 )}
 
-                {/* Warning for expiring soon */}
+                {}
                 {isPending && timeLeft !== null && timeLeft < 60 && (
                   <motion.div
                     initial={{ opacity: 0, y: 4 }}
@@ -311,7 +310,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                   </motion.div>
                 )}
 
-                {/* Actions */}
+                {}
                 <div className="flex flex-col gap-3">
                   {isPending && (
                     <>
@@ -387,7 +386,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
             </motion.div>
           </AnimatePresence>
 
-          {/* Security note */}
+          {}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
