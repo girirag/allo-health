@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "prisma:seed": "ts-node -r dotenv/config prisma/seed.ts",
     "dev": "next dev",
     "build": "next build",
@@ -19,6 +20,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.3.0",
+    "dotenv": "17.4.2",
     "framer-motion": "^12.40.0",
     "ioredis": "^5.10.1",
     "lucide-react": "^1.16.0",

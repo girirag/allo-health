@@ -54,7 +54,7 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
 }
 
@@ -129,7 +129,7 @@ export default function Home() {
   }
 
   const filteredProducts = useMemo(() => {
-    if (!products) return []
+    if (!products || !Array.isArray(products)) return []
 
     return products.filter((product) => {
 
@@ -161,8 +161,10 @@ export default function Home() {
     })
   }, [products, searchQuery, activeWarehouseTab, activeStockTab])
 
-  const totalProducts = products?.length ?? 0
-  const totalStock = products?.reduce((sum, p) => sum + p.inventory.reduce((s, i) => s + i.availableStock, 0), 0) ?? 0
+  const totalProducts = Array.isArray(products) ? products.length : 0
+  const totalStock = Array.isArray(products)
+    ? products.reduce((sum, p) => sum + p.inventory.reduce((s, i) => s + i.availableStock, 0), 0)
+    : 0
 
   return (
     <main className="relative min-h-screen z-10">
@@ -438,8 +440,10 @@ export default function Home() {
               animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
             >
-              {filteredProducts.map((product) => {
+              {filteredProducts.map((product, productIndex) => {
                 const totalAvailable = product.inventory.reduce((sum, inv) => sum + inv.availableStock, 0)
+                const imageId = 200 + (productIndex % 30)
+
                 return (
                   <motion.div key={product.id} variants={cardVariants} className="relative group">
 
@@ -457,11 +461,20 @@ export default function Home() {
                       </div>
 
                       <div className="p-6 pb-4">
+                        {}
+                        <div className="w-full h-36 rounded-lg overflow-hidden mb-4 bg-slate-100 border border-slate-200">
+                          <img
+                            src={`https://picsum.photos/seed/${imageId}/400/144`}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+
                         <h3 className="font-bold text-lg text-slate-800 group-hover:text-cyan-600 transition-colors duration-200">
                           {product.name}
                         </h3>
-                        <p className="text-slate-500 text-xs mt-1.5 leading-relaxed line-clamp-2 h-8">
-                          {product.description}
+                        <p className="text-slate-500 text-sm mt-1.5 leading-relaxed line-clamp-3">
+                          {product.description} — Premium quality item sourced from verified suppliers. Backed by our 30-day return policy and same-day dispatch from the nearest fulfillment node.
                         </p>
 
                         <div className="flex items-baseline justify-between mt-4">
